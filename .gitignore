@@ -37,3 +37,6 @@ data/processed/*
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Monster data
+/data/imports/monsters/*.json
