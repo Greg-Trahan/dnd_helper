@@ -1,6 +1,6 @@
-from sqlalchemy import Float, String, Text, ForeignKey, JSON
-from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Text, ForeignKey, JSON, UniqueConstraint
+from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
 
@@ -17,7 +17,10 @@ class Monster(Base):
     size: Mapped[str | None] = mapped_column(String(50), nullable=True)
     creature_type: Mapped[str | None] = mapped_column(JSON, nullable=True)
     alignment: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    challenge_rating: Mapped[str | None] = mapped_column(Float, nullable=True)
+    challenge_rating: Mapped[float | None] = mapped_column(
+        DOUBLE_PRECISION,
+        nullable=True,
+    )
 
     armor_class: Mapped[int | None] = mapped_column(nullable=True)
     hit_points: Mapped[int | None] = mapped_column(nullable=True)

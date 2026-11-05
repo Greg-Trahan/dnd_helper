@@ -1,6 +1,5 @@
 from sqlalchemy import (
     Boolean,
-    Float,
     Integer,
     JSON,
     String,
@@ -8,6 +7,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION
 
 from app.database.base import Base
 
@@ -41,7 +41,10 @@ class Spell(Base):
     range_unit: Mapped[str | None] = mapped_column(String(30), nullable=True)
 
     shape_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    shape_size: Mapped[float | None] = mapped_column(Float, nullable=True)
+    shape_size: Mapped[float | None] = mapped_column(
+        DOUBLE_PRECISION,
+        nullable=True,
+    )
     shape_size_unit: Mapped[str | None] = mapped_column(String(30), nullable=True)
 
     casting_time: Mapped[str | None] = mapped_column(String(100), nullable=True)
