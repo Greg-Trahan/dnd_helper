@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react'
+import { getHealth } from '../services/dashboard/dashboardService'
 import '../styles/global.css'
 
 type View = 'dashboard' | 'characters' | 'campaigns' | 'compendium' | 'settings'
-
-type HealthResponse = {
-  status: string
-  database: string
-}
 
 const navigation: { id: View; label: string; icon: string }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '⌂' },
@@ -31,13 +27,7 @@ function App() {
   useEffect(() => {
     let mounted = true
 
-    fetch('/api/v1/health')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('API request failed')
-        }
-        return response.json() as Promise<HealthResponse>
-      })
+    getHealth()
       .then((data) => {
         if (mounted) {
           setApiStatus(
