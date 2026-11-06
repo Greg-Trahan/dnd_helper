@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './App.css'
+import './styles/global.css'
 
 type View = 'dashboard' | 'characters' | 'campaigns' | 'compendium' | 'settings'
 
