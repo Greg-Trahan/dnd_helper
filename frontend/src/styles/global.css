@@ -775,3 +775,123 @@
     gap: 8px;
   }
 }
+
+/* Character creation form */
+
+.character-form {
+  max-width: 850px;
+}
+
+.character-form-section {
+  margin-bottom: 22px;
+  padding: 25px;
+  border: 1px solid #39352b;
+  border-radius: 5px;
+  background: #1b1a16;
+}
+
+.character-form-section h2 {
+  margin: 9px 0 22px;
+  color: #e7dfd1;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.character-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.character-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.character-field-full {
+  grid-column: 1 / -1;
+}
+
+.character-field > span {
+  color: #c9bda9;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.character-field input,
+.character-field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #51432e;
+  border-radius: 4px;
+  outline: none;
+  background: #14130f;
+  color: #e7dfd1;
+  font: inherit;
+  font-size: 12px;
+}
+
+.character-field input:focus,
+.character-field select:focus {
+  border-color: #bd9556;
+  box-shadow: 0 0 0 2px rgb(189 149 86 / 15%);
+}
+
+.character-field input::placeholder {
+  color: #756d60;
+}
+
+.character-field select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.character-form-hint {
+  margin-top: 15px;
+  color: #a9a194;
+  font-size: 10px;
+}
+
+.character-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-bottom: 25px;
+}
+
+.character-form-actions .primary-button,
+.character-form-actions .secondary-button {
+  margin-top: 0;
+}
+
+.character-form-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 600px) {
+  .character-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .character-field-full {
+    grid-column: auto;
+  }
+
+  .character-form-section {
+    padding: 18px;
+  }
+
+  .character-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .character-form-actions button {
+    width: 100%;
+  }
+}

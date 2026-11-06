@@ -53,11 +53,6 @@ def _validate_references(
         if species is None:
             raise ValueError(f"Species {species_id} does not exist.")
 
-        if species.edition_id != edition_id:
-            raise ValueError(
-                "The selected species does not belong to the selected edition."
-            )
-
     if species_variant_id is not None:
         if species is None:
             raise ValueError(
@@ -82,11 +77,6 @@ def _validate_references(
         if background is None:
             raise ValueError(
                 f"Background {background_id} does not exist."
-            )
-
-        if background.edition_id != edition_id:
-            raise ValueError(
-                "The selected background does not belong to the selected edition."
             )
 
 

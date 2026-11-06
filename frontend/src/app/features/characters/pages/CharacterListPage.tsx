@@ -12,6 +12,8 @@ import {
   getSpecies,
 } from '../services/referenceDataService'
 
+import CharacterCreatePage from './CharacterCreatePage'
+
 import type { Character } from '../types/character'
 import type {
   BackgroundOption,
@@ -64,8 +66,8 @@ export default function CharacterListPage() {
   const [data, setData] = useState<CharacterData>(emptyData)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [notice, setNotice] = useState<string | null>(null)
   const [deletingId, setDeletingId] = useState<number | null>(null)
+  const [creating, setCreating] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -117,6 +119,11 @@ export default function CharacterListPage() {
     }
   }
 
+  async function handleCreated() {
+    setCreating(false)
+    await loadCharacters()
+  }
+
   async function handleDelete(id: number) {
     const character = data.characters.find((item) => item.id === id)
 
@@ -151,6 +158,15 @@ export default function CharacterListPage() {
     }
   }
 
+  if (creating) {
+    return (
+      <CharacterCreatePage
+        onCancel={() => setCreating(false)}
+        onCreated={() => void handleCreated()}
+      />
+    )
+  }
+
   const playerNames = new Map(
     data.players.map((item) => [item.id, item.name]),
   )
@@ -176,28 +192,12 @@ export default function CharacterListPage() {
         <button
           className="primary-button"
           type="button"
-          onClick={() => setNotice(
-            'The character creation form is the next part of the builder.',
-          )}
+          onClick={() => setCreating(true)}
         >
           <span aria-hidden="true">＋</span>
           Create character
         </button>
       </div>
-
-      {notice && (
-        <div className="character-notice" role="status">
-          {notice}
-          <button
-            className="text-button"
-            type="button"
-            onClick={() => setNotice(null)}
-            aria-label="Dismiss message"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
 
       {error && (
         <div className="character-error" role="alert">
@@ -228,9 +228,7 @@ export default function CharacterListPage() {
           <button
             className="primary-button"
             type="button"
-            onClick={() => setNotice(
-              'The character creation form is the next part of the builder.',
-            )}
+            onClick={() => setCreating(true)}
           >
             Create your first character
           </button>

@@ -20,8 +20,17 @@ export async function getEditions(): Promise<EditionOption[]> {
 export async function getSpecies(
   editionId?: number,
 ): Promise<SpeciesOption[]> {
-  const query = editionId ? `?edition_id=${editionId}` : ''
-  return api.get<SpeciesOption[]>(`${API_ENDPOINTS.species}${query}`)
+  const params = new URLSearchParams({
+    playable_only: 'false',
+  })
+
+  if (editionId) {
+    params.set('edition_id', String(editionId))
+  }
+
+  return api.get<SpeciesOption[]>(
+    `${API_ENDPOINTS.species}?${params.toString()}`,
+  )
 }
 
 export async function getSpeciesVariants(
