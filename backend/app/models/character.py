@@ -4,6 +4,7 @@ from sqlalchemy import DateTime, ForeignKey, Index, Integer, JSON, String, Text,
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
+from app.models.character_campaign import character_campaigns
 
 
 class Character(Base):
@@ -15,6 +16,12 @@ class Character(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
+
+    player_id: Mapped[int] = mapped_column(
+        ForeignKey("players.id", ondelete="RESTRICT", name="fk_characters_player_id_players"),
+        nullable=False,
+        index=True,
+    )
 
     edition_id: Mapped[int] = mapped_column(
         ForeignKey("editions.id", ondelete="RESTRICT"),
@@ -68,9 +75,22 @@ class Character(Base):
         DateTime(timezone=True),
         nullable=False,
         server_default=func.now(),
+        onupdate=func.now(),
     )
 
     # Core character references
+    player: Mapped["Player"] = relationship(
+        "Player",
+        back_populates="characters",
+    )
+
+    campaigns: Mapped[list["Campaign"]] = relationship(
+        "Campaign",
+        secondary=character_campaigns,
+        back_populates="characters",
+        passive_deletes=True,
+    )
+
     edition: Mapped["Edition"] = relationship(
         "Edition",
         back_populates="characters",

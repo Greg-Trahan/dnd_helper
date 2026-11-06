@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getHealth } from '../services/dashboard/dashboardService'
+import CharacterListPage from './features/characters/pages/CharacterListPage'
 import '../styles/global.css'
 
 type View = 'dashboard' | 'characters' | 'campaigns' | 'compendium' | 'settings'
@@ -167,6 +168,8 @@ function App() {
                 </p>
               </section>
             </>
+          ) : activeView === 'characters' ? (
+            <CharacterListPage />
           ) : (
             <section className="placeholder-section">
               <div className="eyebrow">D&D HELPER WORKSPACE</div>

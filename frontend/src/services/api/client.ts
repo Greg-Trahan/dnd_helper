@@ -23,10 +23,18 @@ async function request<T>(
   })
 
   if (!response.ok) {
-    throw new ApiError(
-      `API request failed: ${response.status} ${response.statusText}`,
-      response.status,
-    )
+    let message = `API request failed: ${response.status} ${response.statusText}`
+
+    try {
+      const errorData = await response.json()
+      if (typeof errorData.detail === 'string') {
+        message = errorData.detail
+      }
+    } catch {
+      // Keep the default HTTP error message.
+    }
+
+    throw new ApiError(message, response.status)
   }
 
   if (response.status === 204) {
@@ -54,6 +62,16 @@ export const api = {
   put<T>(endpoint: string, body: unknown): Promise<T> {
     return request<T>(endpoint, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+  },
+
+  patch<T>(endpoint: string, body: unknown): Promise<T> {
+    return request<T>(endpoint, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
