@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -20,6 +20,17 @@ class ClassResource(Base):
     class_id: Mapped[int] = mapped_column(
         ForeignKey("classes.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    character_class: Mapped["CharacterClass"] = relationship(
+        "CharacterClass",
+        back_populates="resources",
+    )
+
+    resource_progressions: Mapped[list["ClassResourceProgression"]] = relationship(
+        "ClassResourceProgression",
+        back_populates="resource",
+        passive_deletes=True,
     )
 
     name: Mapped[str] = mapped_column(String(120), nullable=False)

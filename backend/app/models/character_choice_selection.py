@@ -3,7 +3,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Integer,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -35,6 +35,21 @@ class CharacterChoiceSelection(Base):
     option_id: Mapped[int] = mapped_column(
         ForeignKey("feature_options.id", ondelete="RESTRICT"),
         nullable=False,
+    )
+
+    character: Mapped["Character"] = relationship(
+        "Character",
+        back_populates="choice_selections",
+    )
+
+    choice_group: Mapped["FeatureChoiceGroup"] = relationship(
+        "FeatureChoiceGroup",
+        back_populates="character_selections",
+    )
+
+    option: Mapped["FeatureOption"] = relationship(
+        "FeatureOption",
+        back_populates="character_selections",
     )
 
     selected_at_level: Mapped[int | None] = mapped_column(Integer)

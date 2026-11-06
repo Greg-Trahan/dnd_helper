@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, Index, Integer, JSON, String, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -30,6 +30,38 @@ class CharacterClass(Base):
     source_id: Mapped[int | None] = mapped_column(
         ForeignKey("sources.id", ondelete="SET NULL"),
         nullable=True,
+    )
+
+    character_assignments: Mapped[list["CharacterClassAssignment"]] = relationship(
+        "CharacterClassAssignment",
+        back_populates="character_class",
+        passive_deletes=True,
+    )
+
+    # Subclasses and granted features
+    subclasses: Mapped[list["Subclass"]] = relationship(
+        "Subclass",
+        back_populates="character_class",
+        passive_deletes=True,
+    )
+
+    feature_grants: Mapped[list["ClassFeatureGrant"]] = relationship(
+        "ClassFeatureGrant",
+        back_populates="character_class",
+        passive_deletes=True,
+    )
+
+    # Level progression and resources
+    level_progressions: Mapped[list["ClassLevelProgression"]] = relationship(
+        "ClassLevelProgression",
+        back_populates="character_class",
+        passive_deletes=True,
+    )
+
+    resources: Mapped[list["ClassResource"]] = relationship(
+        "ClassResource",
+        back_populates="character_class",
+        passive_deletes=True,
     )
 
     external_id: Mapped[str | None] = mapped_column(String(160))

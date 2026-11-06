@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, Index, Integer, JSON, String, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -30,6 +30,12 @@ class Background(Base):
     source_id: Mapped[int | None] = mapped_column(
         ForeignKey("sources.id", ondelete="SET NULL"),
         nullable=True,
+    )
+
+    characters: Mapped[list["Character"]] = relationship(
+        "Character",
+        back_populates="background",
+        passive_deletes=True,
     )
 
     external_id: Mapped[str | None] = mapped_column(String(160))

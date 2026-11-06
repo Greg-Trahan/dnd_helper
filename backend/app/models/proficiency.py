@@ -5,7 +5,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -30,6 +30,12 @@ class Proficiency(Base):
             "external_id",
             name="uq_proficiency_source_external",
         ),
+    )
+
+    character_assignments: Mapped[list["CharacterProficiency"]] = relationship(
+        "CharacterProficiency",
+        back_populates="proficiency",
+        passive_deletes=True,
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)

@@ -4,7 +4,7 @@ from sqlalchemy import (
     UniqueConstraint,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -30,6 +30,16 @@ class FeatFeatureLink(Base):
     feature_id: Mapped[int] = mapped_column(
         ForeignKey("features.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    feat: Mapped["Feat"] = relationship(
+        "Feat",
+        back_populates="feature_links",
+    )
+
+    feature: Mapped["Feature"] = relationship(
+        "Feature",
+        back_populates="feat_feature_links",
     )
 
     display_order: Mapped[int] = mapped_column(

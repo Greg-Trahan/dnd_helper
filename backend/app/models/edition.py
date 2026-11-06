@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -13,6 +13,12 @@ class Edition(Base):
         String(20),
         nullable=False,
         unique=True,
+    )
+
+    characters: Mapped[list["Character"]] = relationship(
+        "Character",
+        back_populates="edition",
+        passive_deletes=True,
     )
 
     name: Mapped[str] = mapped_column(String(80), nullable=False)

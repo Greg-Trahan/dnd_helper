@@ -5,7 +5,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -32,6 +32,12 @@ class Language(Base):
     edition_id: Mapped[int] = mapped_column(
         ForeignKey("editions.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    character_assignments: Mapped[list["CharacterLanguage"]] = relationship(
+        "CharacterLanguage",
+        back_populates="language",
+        passive_deletes=True,
     )
 
     name: Mapped[str] = mapped_column(String(100), nullable=False)

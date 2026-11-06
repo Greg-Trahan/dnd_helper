@@ -5,7 +5,7 @@ from sqlalchemy import (
     Text,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -18,6 +18,11 @@ class FeatPrerequisite(Base):
     feat_id: Mapped[int] = mapped_column(
         ForeignKey("feats.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    feat: Mapped["Feat"] = relationship(
+        "Feat",
+        back_populates="prerequisites",
     )
 
     prerequisite_type: Mapped[str] = mapped_column(

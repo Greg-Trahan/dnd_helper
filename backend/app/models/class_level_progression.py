@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, Index, Integer, JSON, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -25,6 +25,11 @@ class ClassLevelProgression(Base):
     class_id: Mapped[int] = mapped_column(
         ForeignKey("classes.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    character_class: Mapped["CharacterClass"] = relationship(
+        "CharacterClass",
+        back_populates="level_progressions",
     )
 
     level: Mapped[int] = mapped_column(Integer, nullable=False)

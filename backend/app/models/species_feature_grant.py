@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, Integer, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -29,6 +29,21 @@ class SpeciesFeatureGrant(Base):
     feature_id: Mapped[int] = mapped_column(
         ForeignKey("features.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    species: Mapped["Species"] = relationship(
+        "Species",
+        back_populates="feature_grants",
+    )
+
+    variant: Mapped["SpeciesVariant | None"] = relationship(
+        "SpeciesVariant",
+        back_populates="feature_grants",
+    )
+
+    feature: Mapped["Feature"] = relationship(
+        "Feature",
+        back_populates="species_feature_grants",
     )
 
     display_order: Mapped[int] = mapped_column(

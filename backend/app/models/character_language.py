@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -15,6 +15,16 @@ class CharacterLanguage(Base):
     language_id: Mapped[int] = mapped_column(
         ForeignKey("languages.id", ondelete="RESTRICT"),
         primary_key=True,
+    )
+
+    character: Mapped["Character"] = relationship(
+        "Character",
+        back_populates="language_assignments",
+    )
+
+    language: Mapped["Language"] = relationship(
+        "Language",
+        back_populates="character_assignments",
     )
 
     source_type: Mapped[str | None] = mapped_column(String(40))

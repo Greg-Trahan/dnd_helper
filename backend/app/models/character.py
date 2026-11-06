@@ -70,8 +70,77 @@ class Character(Base):
         server_default=func.now(),
     )
 
+    # Core character references
+    edition: Mapped["Edition"] = relationship(
+        "Edition",
+        back_populates="characters",
+    )
+
+    species: Mapped["Species | None"] = relationship(
+        "Species",
+        back_populates="characters",
+    )
+
+    species_variant: Mapped["SpeciesVariant | None"] = relationship(
+        "SpeciesVariant",
+        back_populates="characters",
+    )
+
+    background: Mapped["Background | None"] = relationship(
+        "Background",
+        back_populates="characters",
+    )
+
+    # Character class assignments
     class_assignments: Mapped[list["CharacterClassAssignment"]] = relationship(
         "CharacterClassAssignment",
         back_populates="character",
         cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    # Character feature and choice selections
+    choice_selections: Mapped[list["CharacterChoiceSelection"]] = relationship(
+        "CharacterChoiceSelection",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    feature_selections: Mapped[list["CharacterFeatureSelection"]] = relationship(
+        "CharacterFeatureSelection",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    # Character feats
+    feat_selections: Mapped[list["CharacterFeat"]] = relationship(
+        "CharacterFeat",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    # Character inventory
+    inventory_entries: Mapped[list["CharacterInventory"]] = relationship(
+        "CharacterInventory",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    # Character languages and proficiencies
+    language_assignments: Mapped[list["CharacterLanguage"]] = relationship(
+        "CharacterLanguage",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    proficiency_assignments: Mapped[list["CharacterProficiency"]] = relationship(
+        "CharacterProficiency",
+        back_populates="character",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

@@ -6,7 +6,7 @@ from sqlalchemy import (
     Text,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -46,6 +46,16 @@ class CharacterInventory(Base):
         Boolean,
         nullable=False,
         server_default=text("false"),
+    )
+
+    character: Mapped["Character"] = relationship(
+        "Character",
+        back_populates="inventory_entries",
+    )
+
+    equipment: Mapped["Equipment"] = relationship(
+        "Equipment",
+        back_populates="character_inventory_entries",
     )
 
     notes: Mapped[str | None] = mapped_column(Text)

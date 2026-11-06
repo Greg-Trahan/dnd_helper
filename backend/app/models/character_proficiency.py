@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, ForeignKey, String, text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -24,4 +24,14 @@ class CharacterProficiency(Base):
         Boolean,
         nullable=False,
         server_default=text("false"),
+    )
+
+    character: Mapped["Character"] = relationship(
+        "Character",
+        back_populates="proficiency_assignments",
+    )
+
+    proficiency: Mapped["Proficiency"] = relationship(
+        "Proficiency",
+        back_populates="character_assignments",
     )

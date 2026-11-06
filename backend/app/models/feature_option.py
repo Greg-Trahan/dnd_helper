@@ -9,7 +9,7 @@ from sqlalchemy import (
     UniqueConstraint,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -31,6 +31,17 @@ class FeatureOption(Base):
     choice_group_id: Mapped[int] = mapped_column(
         ForeignKey("feature_choice_groups.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    choice_group: Mapped["FeatureChoiceGroup"] = relationship(
+        "FeatureChoiceGroup",
+        back_populates="options",
+    )
+
+    character_selections: Mapped[list["CharacterChoiceSelection"]] = relationship(
+        "CharacterChoiceSelection",
+        back_populates="option",
+        passive_deletes=True,
     )
 
     name: Mapped[str] = mapped_column(String(160), nullable=False)

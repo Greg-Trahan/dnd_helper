@@ -51,7 +51,17 @@ class CharacterClassAssignment(Base):
         server_default=text("false"),
     )
 
-    character = relationship(
+    character: Mapped["Character"] = relationship(
         "Character",
         back_populates="class_assignments",
+    )
+
+    character_class: Mapped["CharacterClass"] = relationship(
+        "CharacterClass",
+        back_populates="character_assignments",
+    )
+
+    subclass: Mapped["Subclass | None"] = relationship(
+        "Subclass",
+        back_populates="character_assignments",
     )

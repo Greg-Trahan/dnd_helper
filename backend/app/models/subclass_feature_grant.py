@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, Index, Integer, Text, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -30,6 +30,16 @@ class SubclassFeatureGrant(Base):
     feature_id: Mapped[int] = mapped_column(
         ForeignKey("features.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    subclass: Mapped["Subclass"] = relationship(
+        "Subclass",
+        back_populates="feature_grants",
+    )
+
+    feature: Mapped["Feature"] = relationship(
+        "Feature",
+        back_populates="subclass_feature_grants",
     )
 
     character_level: Mapped[int] = mapped_column(Integer, nullable=False)

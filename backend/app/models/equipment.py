@@ -11,7 +11,7 @@ from sqlalchemy import (
     UniqueConstraint,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -49,6 +49,12 @@ class Equipment(Base):
     source_id: Mapped[int | None] = mapped_column(
         ForeignKey("sources.id", ondelete="SET NULL"),
         nullable=True,
+    )
+
+    character_inventory_entries: Mapped[list["CharacterInventory"]] = relationship(
+        "CharacterInventory",
+        back_populates="equipment",
+        passive_deletes=True,
     )
 
     external_id: Mapped[str | None] = mapped_column(String(160))

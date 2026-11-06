@@ -8,7 +8,7 @@ from sqlalchemy import (
     UniqueConstraint,
     text,
 )
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -40,6 +40,24 @@ class Feat(Base):
     source_id: Mapped[int | None] = mapped_column(
         ForeignKey("sources.id", ondelete="SET NULL"),
         nullable=True,
+    )
+
+    character_selections: Mapped[list["CharacterFeat"]] = relationship(
+        "CharacterFeat",
+        back_populates="feat",
+        passive_deletes=True,
+    )
+
+    prerequisites: Mapped[list["FeatPrerequisite"]] = relationship(
+        "FeatPrerequisite",
+        back_populates="feat",
+        passive_deletes=True,
+    )
+
+    feature_links: Mapped[list["FeatFeatureLink"]] = relationship(
+        "FeatFeatureLink",
+        back_populates="feat",
+        passive_deletes=True,
     )
 
     external_id: Mapped[str | None] = mapped_column(String(160))
